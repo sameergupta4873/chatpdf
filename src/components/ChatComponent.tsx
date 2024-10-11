@@ -8,6 +8,8 @@ import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Message } from "ai";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizeable";
+
 
 type Props = { chatId: number };
 

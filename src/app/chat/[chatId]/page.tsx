@@ -1,6 +1,11 @@
 import ChatComponent from "@/components/ChatComponent";
 import ChatSideBar from "@/components/ChatSideBar";
 import PDFViewer from "@/components/PDFViewer";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizeable";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { checkSubscription } from "@/lib/subscription";
@@ -33,19 +38,36 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 
   return (
     <div className="flex max-h-screen overflow-scroll">
-      <div className="flex w-full max-h-screen overflow-scroll">
-        {/* chat sidebar */}
-        <div className="flex-[1] max-w-xs">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} />
-        </div>
-        {/* pdf viewer */}
-        <div className="max-h-screen p-4 oveflow-scroll flex-[5]">
-          <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
-        </div>
-        {/* chat component */}
-        <div className="flex-[3] border-l-4 border-l-slate-200">
-          <ChatComponent chatId={parseInt(chatId)} />
-        </div>
+      <div className="flex w-full max-h-screen">
+        <ResizablePanelGroup
+          direction="horizontal"
+          className=""
+        >
+          <ResizablePanel defaultSize={25} maxSize={30} minSize={20}>
+            {/* chat sidebar */}
+            <div className="flex-[1]">
+              <ChatSideBar
+                chats={_chats}
+                chatId={parseInt(chatId)}
+                isPro={isPro}
+              />
+            </div>
+          </ResizablePanel>
+          <ResizableHandle withHandle className="hover:bg-blue-500 active:bg-blue-500 w-1" />
+          <ResizablePanel className="h-[95vh]">
+            {/* pdf viewer */}
+            {/* <div className="min-h-screen p-4 flex-[5]"> */}
+              <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
+            {/* </div> */}
+          </ResizablePanel>
+          <ResizableHandle withHandle className="hover:bg-blue-500 active:bg-blue-500 w-1" />
+          <ResizablePanel defaultSize={35} maxSize={40} minSize={30}>
+            {/* chat component */}
+            <div className="flex-[3] border-l-4 border-l-slate-200">
+              <ChatComponent chatId={parseInt(chatId)} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   );
